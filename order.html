@@ -214,11 +214,107 @@
             background: var(--glass);
             border: 1px solid var(--glass-border);
             border-radius: 12px;
-            padding: 1.25rem;
+            overflow: hidden;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
+        }
+
+        .menu-card-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+            background: var(--dark-2);
+        }
+
+        .menu-card-body {
+            padding: 1rem 1.25rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        /* Delivery Platform Section */
+        .delivery-section {
+            background: var(--dark-2);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 1.5rem;
+        }
+
+        .delivery-header {
+            text-align: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .delivery-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .delivery-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .delivery-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid var(--glass-border);
+            background: var(--glass);
+            color: var(--text);
+        }
+
+        .delivery-btn:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+            background: rgba(42, 191, 191, 0.1);
+            color: var(--primary);
+        }
+
+        .delivery-btn img {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .delivery-btn-active {
+            background: var(--primary);
+            color: var(--dark);
+            border-color: var(--primary);
+        }
+
+        .delivery-btn-active:hover {
+            background: var(--primary-dark);
+            color: var(--dark);
+        }
+
+        .delivery-divider {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        .delivery-divider::before,
+        .delivery-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--glass-border);
         }
 
         .menu-card:hover {
@@ -965,8 +1061,12 @@
                 padding: 1rem;
             }
 
-            .menu-card {
-                padding: 1rem;
+            .menu-card-body {
+                padding: 0.75rem 1rem 1rem;
+            }
+
+            .menu-card-image {
+                height: 140px;
             }
 
             .menu-card-title {
@@ -975,6 +1075,15 @@
 
             .menu-card-price {
                 font-size: 0.95rem;
+            }
+
+            .delivery-buttons {
+                gap: 0.5rem;
+            }
+
+            .delivery-btn {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.8rem;
             }
 
             .modal {
@@ -1040,6 +1149,25 @@
             </div>
         </div>
     </header>
+
+    <!-- DELIVERY PLATFORMS -->
+    <div class="delivery-section">
+        <div class="delivery-header">
+            <h3>Order for Delivery</h3>
+        </div>
+        <div class="delivery-buttons">
+            <a href="https://order.online/store/t4-folsom-402054" target="_blank" class="delivery-btn">
+                <span>🛵</span> DoorDash
+            </a>
+            <a href="https://www.grubhub.com/restaurant/t4-tea-for-u-2690-e-bidwell-st-folsom/9741096" target="_blank" class="delivery-btn">
+                <span>🍔</span> Grubhub
+            </a>
+            <a href="https://www.clover.com/online-ordering/t4-folsom" target="_blank" class="delivery-btn">
+                <span>🍀</span> Clover
+            </a>
+            <div class="delivery-divider">or order below for pickup</div>
+        </div>
+    </div>
 
     <!-- CATEGORY TABS -->
     <div class="category-tabs" id="categoryTabs"></div>
@@ -1348,6 +1476,142 @@
             { name: 'Cookies & Cream', price: 1.50 }
         ];
 
+        // ==================== IMAGE MAP ====================
+        const imageMap = {
+            "Popcorn Chicken": "images/menu/popcorn-chicken.jpg",
+            "Thai Milk Tea": "images/menu/thai-milk-tea.jpg",
+            "Taro Milk Tea": "images/menu/taro-milk-tea.jpg",
+            "Earl Grey Milk Tea": "images/menu/earl-grey-milk-tea.jpg",
+            "Jasmine Milk Tea": "images/menu/jasmine-milk-tea.jpg",
+            "Okinawa Milk Tea": "images/menu/okinawa-milk-tea.jpg",
+            "Strawberry Lemonade Smoothie": "images/menu/strawberry-lemonade-smoothie.jpg",
+            "Fried Cheese Sticks (6 Pieces)": "images/menu/fried-cheese-sticks-6-pieces.jpg",
+            "Seasoned Curly Fries": "images/menu/seasoned-curly-fries.jpg",
+            "Popcorn Chicken Over Fries": "images/menu/popcorn-chicken-over-fries.jpg",
+            "Snow Globe Milk Tea": "images/menu/snow-globe-milk-tea.jpg",
+            "Coffee Milk Tea": "images/menu/coffee-milk-tea.jpg",
+            "Taro Coconut Milk Tea": "images/menu/taro-coconut-milk-tea.jpg",
+            "Classical Rose Milk Tea": "images/menu/classical-rose-milk-tea.jpg",
+            "Ballet Chocolate": "images/menu/ballet-chocolate.jpg",
+            "Brown Sugar Latte": "images/menu/brown-sugar-latte.jpg",
+            "Caramel Milk Tea": "images/menu/caramel-milk-tea.jpg",
+            "Coconut Milk Tea": "images/menu/coconut-milk-tea.jpg",
+            "Guava Milk Tea": "images/menu/guava-milk-tea.jpg",
+            "Honeydew Milk Tea": "images/menu/honeydew-milk-tea.jpg",
+            "Lavender Milk Tea": "images/menu/lavender-milk-tea.jpg",
+            "Mango Milk Tea": "images/menu/mango-milk-tea.jpg",
+            "Peach Milk Tea": "images/menu/peach-milk-tea.jpg",
+            "Green Thai Milk Tea": "images/menu/green-thai-milk-tea.jpg",
+            "Roasted Oolong Milk Tea": "images/menu/roasted-oolong-milk-tea.jpg",
+            "Strawberry Milk Tea": "images/menu/strawberry-milk-tea.jpg",
+            "Winter Melon Milk Tea": "images/menu/winter-melon-milk-tea.jpg",
+            "Elegant Rose Royal Tea": "images/menu/elegant-rose-royal-tea.jpg",
+            "Grapefruit Royal Tea": "images/menu/grapefruit-royal-tea.jpg",
+            "Red Guava Royal Tea": "images/menu/red-guava-royal-tea.jpg",
+            "Honey Peach Royal Tea": "images/menu/honey-peach-royal-tea.jpg",
+            "Mango Royal Tea": "images/menu/mango-royal-tea.jpg",
+            "Passion Fruit Royal Tea": "images/menu/passion-fruit-royal-tea.jpg",
+            "Pineapple Royal Tea": "images/menu/pineapple-royal-tea.jpg",
+            "Watermelon Royal Tea": "images/menu/watermelon-royal-tea.jpg",
+            "Pineapple Mango Royal Tea": "images/menu/pineapple-mango-royal-tea.jpg",
+            "Strawberry Lemonade Royal Tea": "images/menu/strawberry-lemonade-royal-tea.jpg",
+            "Winter Melon Tea": "images/menu/winter-melon-tea.jpg",
+            "Orange Sunrise Milkshake": "images/menu/orange-sunrise-milkshake.jpg",
+            "Coffee Milk Tea Smoothie": "images/menu/coffee-milk-tea-smoothie.jpg",
+            "Mango Smoothie": "images/menu/mango-smoothie.jpg",
+            "Mango Milkshake": "images/menu/mango-milkshake.jpg",
+            "Matcha Milkshake": "images/menu/matcha-milkshake.jpg",
+            "Passion Fruit Smoothie": "images/menu/passion-fruit-smoothie.jpg",
+            "Taro Milkshake": "images/menu/taro-milkshake.jpg",
+            "Thai Tea Milkshake": "images/menu/thai-tea-milkshake.jpg",
+            "Taro Coconut Milkshake": "images/menu/taro-coconut-milkshake.jpg",
+            "Chocolate Milkshake": "images/menu/chocolate-milkshake.jpg",
+            "Coconut Milkshake": "images/menu/coconut-milkshake.jpg",
+            "Guava Smoothie": "images/menu/guava-smoothie.jpg",
+            "Honeydew Milkshake": "images/menu/honeydew-milkshake.jpg",
+            "Honeydew Smoothie": "images/menu/honeydew-smoothie.jpg",
+            "Honey Peach Smoothie": "images/menu/honey-peach-smoothie.jpg",
+            "Lemon Smoothie": "images/menu/lemon-smoothie.jpg",
+            "Lychee Smoothie": "images/menu/lychee-smoothie.jpg",
+            "Orange Cream Milkshake": "images/menu/orange-cream-milkshake.jpg",
+            "Passion Fruit Guava Milkshake": "images/menu/passion-fruit-guava-milkshake.jpg",
+            "Watermelon Smoothie": "images/menu/watermelon-smoothie.jpg",
+            "Pineapple Smoothie": "images/menu/pineapple-smoothie.jpg",
+            "Strawberry Coconut Milkshake": "images/menu/strawberry-coconut-milkshake.jpg",
+            "Passion Fruit Guava Smoothie": "images/menu/passion-fruit-guava-smoothie.jpg",
+            "Pina Colada Smoothie": "images/menu/pina-colada-smoothie.jpg",
+            "Passion Fruit Milkshake": "images/menu/passion-fruit-milkshake.jpg",
+            "Green Apple Lemonade Smoothie": "images/menu/green-apple-lemonade-smoothie.jpg",
+            "Mocha Milkshake": "images/menu/mocha-milkshake.jpg",
+            "Strawberry Milkshake": "images/menu/strawberry-milkshake.jpg",
+            "Strawberry Smoothie": "images/menu/strawberry-smoothie.jpg",
+            "Earl Grey Tea": "images/menu/earl-grey-tea.jpg",
+            "Green Tea with Mango Ice Cream": "images/menu/green-tea-with-mango-ice-cream.jpg",
+            "Honey Green Tea": "images/menu/honey-green-tea.jpg",
+            "Jasmine Green Tea": "images/menu/jasmine-green-tea.jpg",
+            "Lemon Bomb Tea": "images/menu/lemon-bomb-tea.jpg",
+            "Lychee Black Tea": "images/menu/lychee-black-tea.jpg",
+            "Roasted Oolong Tea": "images/menu/roasted-oolong-tea.jpg",
+            "Strawberry Yogurt Tea": "images/menu/strawberry-yogurt-tea.jpg",
+            "Yogurt Green Tea": "images/menu/yogurt-green-tea.jpg",
+            "Coffee Latte": "images/menu/coffee-latte.jpg",
+            "Brown Sugar Coffee Latte": "images/menu/brown-sugar-coffee-latte.jpg",
+            "Caramel Coffee Latte": "images/menu/caramel-coffee-latte.jpg",
+            "Coconut Coffee Latte": "images/menu/coconut-coffee-latte.jpg",
+            "Mocha Coffee Latte": "images/menu/mocha-coffee-latte.jpg",
+            "Taro Coffee Latte": "images/menu/taro-coffee-latte.jpg",
+            "Vanilla Coffee Latte": "images/menu/vanilla-coffee-latte.jpg",
+            "Shrimp Puffs": "images/menu/shrimp-puffs.jpg",
+            "Honey Popcorn Chicken": "images/menu/honey-popcorn-chicken.jpg",
+            "Orange Popcorn Chicken": "images/menu/orange-popcorn-chicken.jpg",
+            "Fish and Fries": "images/menu/fish-and-fries.jpg",
+            "Crab Cream Cheese Wontons": "images/menu/crab-cream-cheese-wontons-6-pieces.jpg",
+            "T3 Combo": "images/menu/t3-combo.jpg",
+            "French Fries": "images/menu/french-fries.jpg",
+            "Fried Tofu": "images/menu/fried-tofu.jpg",
+            "Fried Calamari": "images/menu/fried-calamari.jpg",
+            "Popcorn Shrimp": "images/menu/popcorn-shrimp-and-shrimp-chips.jpg",
+            "Seafood Combo": "images/menu/seafood-combo.jpg",
+            "Veggie Egg Rolls": "images/menu/veggie-egg-rolls-4-pieces.jpg",
+            "Shrimp Chips": "images/menu/shrimp-chips.jpg",
+            "Chicken Pot Stickers": "images/menu/chicken-pot-stickers-6-pieces.jpg",
+            "Fried Flour Buns": "images/menu/fried-flour-buns-4-pieces.jpg",
+            "Sweet Potato Fries": "images/menu/sweet-potato-fries.jpg",
+            "Red Bean Sesame Balls": "images/menu/red-bean-sesame-balls-6pcs.jpg",
+            "Tater Tots": "images/menu/tater-tots.jpg",
+            "Fried Pickle Chips": "images/menu/fried-pickle-chips.jpg",
+            "Lychee Milk Tea": "images/menu/lychee-black-tea.jpg",
+            "Matcha Milk Tea": "images/menu/matcha-milkshake.jpg"
+        };
+
+        // Smart image lookup - handles ★ prefixes, "w/ Sea Salt", "/Smoothie" variants, etc.
+        function getItemImage(itemName) {
+            // Strip ★ prefix
+            let clean = itemName.replace(/^★/, '').trim();
+
+            // Direct match
+            if (imageMap[clean]) return imageMap[clean];
+
+            // Try without "/Smoothie" or "/ Taro Coconut" suffix
+            let base = clean.split('/')[0].trim();
+            if (imageMap[base]) return imageMap[base];
+
+            // Try without "w/ Sea Salt"
+            let noSeasalt = clean.replace(/\s*w\/\s*Sea Salt/i, '').trim();
+            if (imageMap[noSeasalt]) return imageMap[noSeasalt];
+
+            // Try partial match on first two words
+            let words = clean.toLowerCase().split(/\s+/);
+            for (const [key, val] of Object.entries(imageMap)) {
+                let keyWords = key.toLowerCase().split(/\s+/);
+                if (words[0] === keyWords[0] && words.length > 1 && words[1] === keyWords[1]) {
+                    return val;
+                }
+            }
+
+            return null;
+        }
+
         // ==================== STATE ====================
         let cart = [];
         let currentCategory = 'all';
@@ -1421,18 +1685,25 @@
 
                 let priceDisplay = item.price.toFixed(2);
                 const bestsellerBadge = item.bestseller ? '<span class="best-seller">★</span>' : '';
+                const imgSrc = getItemImage(item.name);
+                const imageHtml = imgSrc
+                    ? `<img class="menu-card-image" src="${imgSrc}" alt="${item.name}" loading="lazy" onerror="this.style.display='none'">`
+                    : `<div class="menu-card-image" style="background: linear-gradient(135deg, var(--dark-2), rgba(42,191,191,0.1)); display:flex; align-items:center; justify-content:center; font-size:2.5rem; opacity:0.3;">🍵</div>`;
 
                 card.innerHTML = `
-                    <div class="menu-card-header">
-                        <div class="menu-card-title">${item.name}</div>
-                        ${bestsellerBadge}
-                    </div>
-                    <div class="menu-card-description">
-                        ${item.isNew ? '<span style="color: var(--accent); font-weight: 500;">New</span>' : ''}
-                    </div>
-                    <div class="menu-card-price">$${priceDisplay}</div>
-                    <div class="menu-card-footer">
-                        <button class="add-btn" onclick="handleAddItem(event, ${item.id})">Add</button>
+                    ${imageHtml}
+                    <div class="menu-card-body">
+                        <div class="menu-card-header">
+                            <div class="menu-card-title">${item.name}</div>
+                            ${bestsellerBadge}
+                        </div>
+                        <div class="menu-card-description">
+                            ${item.isNew ? '<span style="color: var(--accent); font-weight: 500;">New</span>' : ''}
+                        </div>
+                        <div class="menu-card-price">$${priceDisplay}</div>
+                        <div class="menu-card-footer">
+                            <button class="add-btn" onclick="handleAddItem(event, ${item.id})">Add</button>
+                        </div>
                     </div>
                 `;
 
