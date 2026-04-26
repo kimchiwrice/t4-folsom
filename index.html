@@ -2914,14 +2914,31 @@ const loaderText = loader.querySelector('.loader-text');
 // Skip full animation on repeat visits (sessionStorage persists per tab session)
 const hasVisited = sessionStorage.getItem('t4-visited');
 
+// 3-second max timeout failsafe — loader ALWAYS dismisses
+let loaderDismissed = false;
+function dismissLoader() {
+    if (loaderDismissed) return;
+    loaderDismissed = true;
+    loader.style.opacity = '0';
+    loader.style.transition = 'opacity 0.4s ease';
+    setTimeout(() => {
+        loader.style.display = 'none';
+        initPageAnimations();
+    }, 400);
+}
+setTimeout(dismissLoader, 3000);
+
 if (hasVisited) {
     // Fast skip — just slide it away
     loader.style.display = 'none';
+    loaderDismissed = true;
     initPageAnimations();
 } else {
     sessionStorage.setItem('t4-visited', 'true');
     const loaderTL = gsap.timeline({
         onComplete: () => {
+            if (loaderDismissed) return;
+            loaderDismissed = true;
             gsap.to(loader, {
                 yPercent: -100,
                 duration: 0.8,
