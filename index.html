@@ -290,6 +290,9 @@
         .nav-cta::after { display: none !important; }
 
         .mobile-toggle {
+            background: transparent;
+            border: 0;
+            padding: 10px;
             display: none;
             flex-direction: column;
             gap: 6px;
@@ -2059,6 +2062,11 @@
             .interior-gallery .interior-card:first-child { grid-column: 1; }
             .interior-card { aspect-ratio: 4/3; }
         }
+        button:focus-visible, a:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; }
+        .no-animations .reveal, .no-animations .reveal-left, .no-animations .reveal-right,
+        .no-animations .reveal-scale, .no-animations .hero-badge, .no-animations .hero-title .char,
+        .no-animations .hero-subtitle, .no-animations .hero-ctas, .no-animations .hero-info-bar,
+        .no-animations .hero-scroll { opacity: 1; transform: none; }
     </style>
 </head>
 <body>
@@ -2086,6 +2094,9 @@
 <!-- ==================== NAV ==================== -->
 <nav class="nav" id="navbar">
     <a href="#hero" class="nav-logo">T<span>4</span></a>
+    <button type="button" class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation" aria-controls="navLinks" aria-expanded="false" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+    </button>
     <ul class="nav-links" id="navLinks">
         <li><a href="#menu">Menu</a></li>
         <li><a href="#about">Our Story</a></li>
@@ -2093,9 +2104,7 @@
         <li><a href="#contact">Contact</a></li>
         <li><a href="https://app.meeth.ai/r/t4folsom/store" target="_blank" rel="noopener noreferrer" class="nav-cta">Order Now</a></li>
     </ul>
-    <div class="mobile-toggle" id="mobileToggle" onclick="toggleMenu()">
-        <span></span><span></span><span></span>
-    </div>
+
 </nav>
 
 <!-- ==================== HERO ==================== -->
@@ -2904,7 +2913,10 @@
 </footer>
 
 <!-- ==================== SCRIPTS ==================== -->
+<script src="store-hours.js"></script>
 <script>
+const animationsAvailable = typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined';
+if (!animationsAvailable) document.documentElement.classList.add('no-animations');
 // ===== LOADING SCREEN =====
 const loader = document.getElementById('loader');
 const loaderLogo = loader.querySelector('.loader-logo');
@@ -2912,7 +2924,8 @@ const loaderLine = loader.querySelector('.loader-line');
 const loaderText = loader.querySelector('.loader-text');
 
 // Skip full animation on repeat visits (sessionStorage persists per tab session)
-const hasVisited = sessionStorage.getItem('t4-visited');
+let hasVisited = false;
+try { hasVisited = sessionStorage.getItem('t4-visited'); } catch {}
 
 // 3-second max timeout failsafe — loader ALWAYS dismisses
 let loaderDismissed = false;
@@ -2928,13 +2941,13 @@ function dismissLoader() {
 }
 setTimeout(dismissLoader, 3000);
 
-if (hasVisited) {
+if (hasVisited || !animationsAvailable) {
     // Fast skip — just slide it away
     loader.style.display = 'none';
     loaderDismissed = true;
     initPageAnimations();
 } else {
-    sessionStorage.setItem('t4-visited', 'true');
+    try { sessionStorage.setItem('t4-visited', 'true'); } catch {}
     const loaderTL = gsap.timeline({
         onComplete: () => {
             if (loaderDismissed) return;
@@ -3014,11 +3027,22 @@ window.addEventListener('scroll', () => {
 
 // ===== MOBILE MENU =====
 function toggleMenu() {
-    document.getElementById('navLinks').classList.toggle('open');
+    setMenuOpen(document.getElementById('mobileToggle').getAttribute('aria-expanded') !== 'true');
 }
 
+function setMenuOpen(open) {
+    document.getElementById('navLinks').classList.toggle('open', open);
+    document.getElementById('mobileToggle').setAttribute('aria-expanded', String(open));
+}
+document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && document.getElementById('mobileToggle').getAttribute('aria-expanded') === 'true') {
+        setMenuOpen(false);
+        document.getElementById('mobileToggle').focus();
+    }
+});
+window.matchMedia('(max-width: 768px)').addEventListener('change', () => setMenuOpen(false));
 document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'));
+    link.addEventListener('click', () => setMenuOpen(false));
 });
 
 // ===== MENU PANEL SWITCH =====
@@ -3031,13 +3055,13 @@ function showMenuPanel(category, btn) {
     if (category === 'all') {
         panels.forEach(panel => {
             panel.classList.add('active');
-            gsap.fromTo(panel, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' });
+            if (animationsAvailable) gsap.fromTo(panel, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' });
         });
     } else {
         panels.forEach(panel => {
             if (panel.dataset.panel === category) {
                 panel.classList.add('active');
-                gsap.fromTo(panel, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' });
+                if (animationsAvailable) gsap.fromTo(panel, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' });
             } else {
                 panel.classList.remove('active');
             }
@@ -3047,6 +3071,7 @@ function showMenuPanel(category, btn) {
 
 // ===== PAGE ANIMATIONS =====
 function initPageAnimations() {
+    if (!animationsAvailable) return;
     gsap.registerPlugin(ScrollTrigger);
 
     // Hero sequence
@@ -3188,32 +3213,25 @@ function initPageAnimations() {
 }
 
 // ===== DYNAMIC HOURS =====
-(function updateHeroHours() {
+function updateHeroHours() {
     const hoursText = document.getElementById('heroHoursText');
     const openStatus = document.getElementById('heroOpenStatus');
     if (!hoursText || !openStatus) return;
 
-    const now = new Date();
-    const day = now.getDay(); // 0=Sun
-    const hour = now.getHours();
-    const minute = now.getMinutes();
-    const currentTime = hour + minute / 60;
+    const { isOpen, label } = window.T4Hours.getStatus(new Date());
+    hoursText.textContent = label;
 
-    // Sun-Thu: 11AM-9PM, Fri-Sat: 11AM-10PM
-    const isFriSat = (day === 5 || day === 6);
-    const closeHour = isFriSat ? 22 : 21;
-    const openHour = 11;
-
-    hoursText.textContent = isFriSat ? '11AM – 10PM' : '11AM – 9PM';
-
-    if (currentTime >= openHour && currentTime < closeHour) {
+    if (isOpen) {
         openStatus.textContent = '● Open Now';
         openStatus.style.color = '#4ADE80';
     } else {
         openStatus.textContent = '● Closed';
         openStatus.style.color = '#F87171';
     }
-})();
+}
+updateHeroHours();
+setInterval(updateHeroHours, 30000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) updateHeroHours(); });
 
 // Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
