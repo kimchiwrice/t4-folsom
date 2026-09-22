@@ -1,0 +1,26 @@
+{
+  "name": "t4-site-maintenance",
+  "version": "1.0.0",
+  "description": "",
+  "main": "serve.js",
+  "scripts": {
+    "preview": "node serve.js",
+    "test": "playwright test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kimchiwrice/t4-folsom.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/kimchiwrice/t4-folsom/issues"
+  },
+  "homepage": "https://github.com/kimchiwrice/t4-folsom#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.63.0"
+  },
+  "private": true
+}
