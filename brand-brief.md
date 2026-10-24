@@ -8,7 +8,7 @@
 **Business Name:** T4 Tea For U (T4 Folsom)
 **Industry:** Boba Tea / Bubble Tea Shop
 **Location:** 2690 E Bidwell St, Suite 600, Folsom, CA 95630 (Broadstone Plaza)
-**Phone:** (916) 803-3841
+**Phone:** (916) 313-2256
 **Website:** t4-folsom.com
 **Social:** Instagram (@t4folsom), TikTok
 **Ownership:** Woman-owned small business
