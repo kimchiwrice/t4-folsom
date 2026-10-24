@@ -30,7 +30,7 @@ Animations are optional. If GSAP or ScrollTrigger fails to load, content becomes
 3. Run `npm.cmd test`. Review the local preview at desktop and phone widths. Check menu filters, keyboard navigation (Enter/Space, Tab, Escape), and the location/contact information.
 4. Review `git diff` for unrelated changes. Commit only the intended files. Do not commit credentials, `node_modules`, or `.vercel`.
 
-Keep Meeth, order.online, and Grubhub links unless the owner confirms a channel change. Link clicks alone do not prove checkout works; do not place a test order without authorization.
+Sean confirmed October 24, 2026: direct all website online-order links to https://app.meeth.ai/r/t4folsom/store. Do not restore order.online or Grubhub buttons without a new owner request. Link clicks alone do not prove checkout works; do not place a test order without authorization.
 
 ## Shared preview and production release
 
