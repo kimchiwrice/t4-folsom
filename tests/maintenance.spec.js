@@ -3,9 +3,9 @@ const { getStatus } = require('../store-hours');
 test('Folsom opening, closing, midnight and daylight saving boundaries', () => {
     for (const [date, open] of [
         ['2026-09-22T17:59:00Z', false], ['2026-09-22T18:00:00Z', true],
-        ['2026-09-23T03:59:00Z', true], ['2026-09-23T04:00:00Z', false],
-        ['2026-09-26T04:59:00Z', true], ['2026-09-26T05:00:00Z', false],
-        ['2026-09-27T04:59:00Z', true], ['2026-09-27T05:00:00Z', false],
+        ['2026-09-23T02:59:00Z', true], ['2026-09-23T03:00:00Z', false],
+        ['2026-09-26T03:59:00Z', true], ['2026-09-26T04:00:00Z', false],
+        ['2026-09-27T03:59:00Z', true], ['2026-09-27T04:00:00Z', false],
         ['2026-09-28T04:00:00Z', false], ['2026-09-22T07:00:00Z', false],
         ['2026-01-05T19:00:00Z', true], ['2026-01-06T05:00:00Z', false],
         ['2026-03-08T18:00:00Z', true], ['2026-11-01T19:00:00Z', true]
@@ -59,4 +59,27 @@ test('desktop preview and unavailable session storage', async ({ page }) => {
     await expect(page.locator('#navLinks')).toBeVisible();
     await page.screenshot({path:'test-results/desktop.png'});
     expect(errors).toEqual([]);
+});
+
+test('Thanksgiving closure uses Folsom date and expires Friday', () => {
+    for (const date of ['2026-11-26T08:00:00Z', '2026-11-26T20:00:00Z', '2026-11-27T07:59:59Z']) {
+        expect(getStatus(new Date(date)).isOpen).toBe(false);
+        expect(getStatus(new Date(date)).holiday).toBe(true);
+    }
+    expect(getStatus(new Date('2026-11-27T08:00:00Z')).holiday).toBeUndefined();
+    expect(getStatus(new Date('2026-11-27T19:00:00Z')).isOpen).toBe(true);
+});
+
+test('both pages show Thanksgiving closure and homepage clears notice Friday', async ({ page }) => {
+    await page.route('**/gsap.min.js', r => r.abort());
+    await page.clock.install({time:new Date('2026-11-26T20:00:00Z')});
+    await page.goto('/');
+    await expect(page.locator('#heroHoursText')).toContainText('Closed today');
+    await expect(page.locator('#holidayHoursNotice')).toBeVisible();
+    await page.goto('/order.html');
+    await expect(page.locator('#statusText')).toContainText('Thanksgiving');
+    await page.clock.setSystemTime(new Date('2026-11-27T19:00:00Z'));
+    await page.goto('/');
+    await expect(page.locator('#holidayHoursNotice')).toBeHidden();
+    await expect(page.locator('#heroOpenStatus')).toContainText('Open Now');
 });

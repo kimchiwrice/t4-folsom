@@ -15,7 +15,7 @@ On macOS/Linux use `npm` in place of `npm.cmd`; change the Playwright browser ch
 ## Where to edit
 
 - `index.html`: page text, CSS, menu items/prices, phone, address, and order links. Search for the visible text to find its source. Preserve the existing layout for routine content changes.
-- `store-hours.js`: Folsom timezone and the opening/closing calculation. Current published hours are Sun–Thu 11AM–9PM, Fri–Sat 11AM–10PM. Update the visible location hours in `index.html` at the same time. Holiday exceptions are not implemented.
+- `store-hours.js`: Folsom timezone and the opening/closing calculation. Current published hours are Sun–Thu 11AM–8PM, Fri–Sat 11AM–9PM. Update the visible location hours in `index.html` at the same time. November 26, 2026 is closed for Thanksgiving; the dated exception expires at midnight in Folsom. Both pages use the shared hours module.
 - `images/` and `videos/`: local media. Keep filenames consistent with HTML references; compress new media before adding it.
 - `tests/maintenance.spec.js`: repeatable browser checks for hours, missing animation scripts, and keyboard navigation.
 

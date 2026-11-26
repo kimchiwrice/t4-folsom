@@ -450,6 +450,7 @@
     </div>
 
 
+    <script src="store-hours.js"></script>
     <script>
         // ==================== MENU DATA ====================
         const menuData = {
@@ -736,21 +737,7 @@
 
         // ==================== STORE HOURS ====================
         function updateStoreStatus() {
-            const now = new Date();
-            const day = now.getDay();
-            const hours = now.getHours();
-
-            let isOpen = false;
-            let openTime = '11:00 AM';
-            let closeTime = '9:00 PM';
-
-            if (day === 0 || day >= 1 && day <= 4) { // Sun-Thu
-                isOpen = hours >= 11 && hours < 21;
-                closeTime = '9:00 PM';
-            } else if (day === 5 || day === 6) { // Fri-Sat
-                isOpen = hours >= 11 && hours < 22;
-                closeTime = '10:00 PM';
-            }
+            const { isOpen, holiday } = window.T4Hours.getStatus(new Date());
 
             const dot = document.getElementById('statusDot');
             const text = document.getElementById('statusText');
@@ -759,7 +746,7 @@
                 text.textContent = 'Open';
             } else {
                 dot.classList.remove('open');
-                text.textContent = 'Closed';
+                text.textContent = holiday ? 'Closed today · Thanksgiving, Nov 26' : 'Closed';
             }
         }
 

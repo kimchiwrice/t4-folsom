@@ -2143,7 +2143,7 @@
             <div class="hero-info-chip" id="heroHoursChip">
                 <span class="hero-info-chip-icon">🕐</span>
                 <span class="hero-info-chip-label">Today</span>
-                <span id="heroHoursText">11AM – 9PM</span>
+                <span id="heroHoursText">11AM – 8PM</span>
                 <span class="hero-info-open" id="heroOpenStatus">● Open</span>
             </div>
             <a href="tel:9163132256" class="hero-info-chip">
@@ -2758,11 +2758,12 @@
                     <div class="location-icon">🕐</div>
                     <div>
                         <div class="location-detail-title">Hours</div>
+                        <p id="holidayHoursNotice" hidden style="color: var(--cream); font-weight: 600; margin-bottom: 1rem;">Closed today for Thanksgiving, November 26. We reopen Friday at 11 AM.</p>
                         <div class="hours-grid">
                             <span class="hours-day">Sun - Thu</span>
-                            <span class="hours-time">11:00 AM - 9:00 PM</span>
+                            <span class="hours-time">11:00 AM - 8:00 PM</span>
                             <span class="hours-day">Fri - Sat</span>
-                            <span class="hours-time">11:00 AM - 10:00 PM</span>
+                            <span class="hours-time">11:00 AM - 9:00 PM</span>
                         </div>
                     </div>
                 </div>
@@ -3217,8 +3218,9 @@ function updateHeroHours() {
     const openStatus = document.getElementById('heroOpenStatus');
     if (!hoursText || !openStatus) return;
 
-    const { isOpen, label } = window.T4Hours.getStatus(new Date());
+    const { isOpen, label, holiday } = window.T4Hours.getStatus(new Date());
     hoursText.textContent = label;
+    document.getElementById('holidayHoursNotice').hidden = !holiday;
 
     if (isOpen) {
         openStatus.textContent = '● Open Now';
